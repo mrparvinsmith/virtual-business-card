@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email this person</title>
+</head>
+<body>
+  <h1>Get my info!</h1>
+  <form action="/users/<%= user.id %>/sendCards" method="post">
+    <label for="email">Your email:</label>
+    <input type="email" name="email">
+  </form>
+</body>
+</html>

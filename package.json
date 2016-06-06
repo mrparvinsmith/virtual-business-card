@@ -18,12 +18,16 @@
   "homepage": "https://github.com/mrparvinsmith/portfolio-website#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "mongoose": "^4.4.20",
     "mongoose-bcrypt": "^1.4.2",
     "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7"
   }
 }

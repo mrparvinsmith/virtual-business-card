@@ -13,6 +13,14 @@ controller.show = function(req, res){
   res.json({message: 'this is user show'});
 };
 
+controller.emailForm = function(req, res){
+  res.render('email_form');
+};
+
+controller.sendCard = function(req, res){
+  res.json({message: 'card has been sent'});
+};
+
 controller.update = function(req, res){
   res.json({message: 'this is user update'});
 };
