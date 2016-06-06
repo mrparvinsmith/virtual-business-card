@@ -16,10 +16,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', function(req, res){
-  res.render('index');
-});
-
 var mongoose = require('mongoose');
 
 // change the link below!
@@ -29,6 +25,14 @@ mongoose.connect(mongoUrl, function(err){
   if(err) throw err;
   console.log('database connected');
 });
+
+app.get('/', function(req, res){
+  res.render('index');
+});
+
+var userRoutes = require('./routes/users');
+
+app.use('/users', userRoutes);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
