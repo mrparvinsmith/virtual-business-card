@@ -18,13 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // set up database
-var mongoose = require('mongoose');
-// change the link below!
-var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/business-card';
-mongoose.connect(mongoUrl, function(err){
-  if(err) throw err;
-  console.log('database connected');
-});
+var db = require('./config/db');
 
 // authentication and session stuff
 var session      = require('express-session');
@@ -34,6 +28,9 @@ var LocalStrategy = require('passport-local').Strategy;
 passport.use(new LocalStrategy(
   function(username, password, cb){
     User.findOne({username: username}, function(err, user){
+      console.log(user);
+      console.log('checking password');
+      console.log(password);
       if (err) { return cb(err); }
       if (!user) {return cb(null, false); }
       if (!user.validatePassword(password)) { return cb(null, false); }
@@ -63,6 +60,10 @@ app.get('/', function(req, res){
   res.render('index', {user: req.user});
 });
 
+app.get('/error', function(req, res){
+  res.render('error', {message: 'login failed'});
+});
+
 app.post('/signup', function(req, res) {
   var body = req.body;
   var user = new User();
@@ -70,16 +71,16 @@ app.post('/signup', function(req, res) {
   user.email = body.email;
   user.password = body.password;
   user.save(function(err) {
-    if (err) throw err;
+    if (err) res.render('error', {message: err});
     req.login(user, function(err){
       if (err) throw err;
-      res.redirect('/', {error: 'there was an error'});
+      res.redirect('/');
     });
   });
 });
 
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login' }),
+  passport.authenticate('local', { failureRedirect: '/error', message: 'there was an error' }),
   function(req, res){
     res.redirect('/');
   });

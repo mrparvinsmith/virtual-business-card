@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt');
 
 var userSchema = new Schema({
   username: {type: String, unique: true},
@@ -14,6 +15,14 @@ var userSchema = new Schema({
   linkedin: String,
   jobTitle: String,
 });
+
+userSchema.methods.validatePassword = function(pwd) {
+  return bcrypt.compareSync(pwd, this.password);
+};
+
+userSchema.methods.encrypt = function(pwd) {
+  return bcrypt.hashSync(pwd, 8);
+};
 
 userSchema.plugin(require('mongoose-bcrypt'));
 
