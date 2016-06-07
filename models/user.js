@@ -14,9 +14,13 @@ var userSchema = new Schema({
   company: String,
   linkedin: String,
   jobTitle: String,
+  skills: [String],
 });
 
 userSchema.methods.validatePassword = function(pwd) {
+  console.log(pwd);
+  console.log(bcrypt.hashSync(pwd, 10));
+  console.log(this.password);
   return bcrypt.compareSync(pwd, this.password);
 };
 

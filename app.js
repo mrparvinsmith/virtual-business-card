@@ -28,12 +28,9 @@ var LocalStrategy = require('passport-local').Strategy;
 passport.use(new LocalStrategy(
   function(username, password, cb){
     User.findOne({username: username}, function(err, user){
-      console.log(user);
-      console.log('checking password');
-      console.log(password);
       if (err) { return cb(err); }
       if (!user) {return cb(null, false); }
-      if (!user.validatePassword(password)) { return cb(null, false); }
+      if (!user.validatePassword(password)) {return cb(null, false);}
       return cb(null, user);
     });
   }));
@@ -69,7 +66,7 @@ app.post('/signup', function(req, res) {
   var user = new User();
   user.username = body.username;
   user.email = body.email;
-  user.password = body.password;
+  user.password = user.encrypt(body.password);
   user.save(function(err) {
     if (err) res.render('error', {message: err});
     req.login(user, function(err){
