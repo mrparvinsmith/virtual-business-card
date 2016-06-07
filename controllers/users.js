@@ -2,15 +2,17 @@ var User = require('../models/user');
 var controller = {};
 
 controller.index = function(req, res){
-  res.render('user_index', {message: "this is the user index"});
-};
-
-controller.create = function(req, res){
-  res.json({message: 'this is user create'});
+  User.find({}, function(err, users){
+    if(err) throw err;
+    res.json(users);
+  });
 };
 
 controller.show = function(req, res){
-  res.json({message: 'this is user show'});
+  User.findById(req.params.id, function(err, user){
+    if(err) throw err;
+    res.render('profile', {message: 'this is user show', user: req.user});
+  });
 };
 
 controller.emailForm = function(req, res){
@@ -27,10 +29,6 @@ controller.update = function(req, res){
 
 controller.destroy = function(req, res){
   res.json({message: 'this is user destroy'});
-};
-
-controller.login = function(req, res){
-  res.json({message: 'this is the login'});
 };
 
 module.exports = controller;

@@ -5,7 +5,43 @@
 </head>
 <body>
   <h1>Welcome</h1>
-  <a href="/users">To the users page</a>
+  <a href="/users">See users</a>
+
+  <% if(!user) { %>
+    <div>
+      <h2>Create Profile</h2>
+      <form action="/signup" method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username">
+        <br>
+        <label for="email">Email</label>
+        <input type="email" name="email">
+        <br>
+        <label for="password">Password</label>
+        <input type="password" name="password">
+        <br>
+        <button>Sign up</button>
+      </form>
+    </div>
+
+    <div>
+      <h2>Login</h2>
+      <form action="/login" method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username">
+        <br>
+        <label for="password">Password</label>
+        <input type="password" name="password">
+        <br>
+        <button>Login</button>
+      </form>
+    </div>
+  <% } else { %>
+    <h3>Hello <%= user.username %></h3>
+    <a href="/users/<%= user._id %>">Go to your profile</a>
+    <br>
+    <a href="/logout">Logout</a>
+  <% } %>
 
 </body>
 </html>

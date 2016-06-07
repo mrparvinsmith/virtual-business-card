@@ -3,19 +3,15 @@ var router = express.Router();
 var controller = require('../controllers/users');
 
 router.route('/')
-  .get(controller.index)
-  .post(controller.create);
-
-router.route('/login')
-  .post(controller.login);
+  .get(controller.index);
 
 router.route('/:id/sendCards')
-  .get(controller.emailForm)
-  .post(controller.sendCard);
+  .get(require('connect-ensure-login').ensureLoggedIn(), controller.emailForm)
+  .post(require('connect-ensure-login').ensureLoggedIn(), controller.sendCard);
 
 router.route('/:id')
-  .get(controller.show)
-  .put(controller.update)
-  .delete(controller.destroy);
+  .get(require('connect-ensure-login').ensureLoggedIn(), controller.show)
+  .put(require('connect-ensure-login').ensureLoggedIn(), controller.update)
+  .delete(require('connect-ensure-login').ensureLoggedIn(), controller.destroy);
 
 module.exports = router;
